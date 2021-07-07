@@ -12,5 +12,4 @@
 #include "koopa/geo.inc.c"
 #include "piranha_plant/geo.inc.c"
 #include "whomp/geo.inc.c"
-#include "chain_ball/geo.inc.c"
 #include "chain_chomp/geo.inc.c"

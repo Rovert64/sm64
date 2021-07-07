@@ -971,6 +971,7 @@ s32 act_turning_around(struct MarioState *m) {
     }
 
     if (m->input & INPUT_A_PRESSED) {
+        //m->SnakeSaftey = 2;
         return set_jumping_action(m, ACT_SIDE_FLIP, 0);
     }
 

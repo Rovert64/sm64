@@ -16,3 +16,6 @@
 #include "water_splash/geo.inc.c"
 #include "sparkle_animation/geo.inc.c"
 #include "mario/geo.inc.c"
+#include "chain_ball/geo.inc.c"
+
+#include "redball/geo.inc.c"

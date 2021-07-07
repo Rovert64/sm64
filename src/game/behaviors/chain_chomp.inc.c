@@ -27,6 +27,33 @@ static struct ObjectHitbox sChainChompHitbox = {
 /**
  * Update function for chain chomp part / pivot.
  */
+void bhv_snakeball_loop(void) {
+    o->oPosX = gMarioState->SnakeHistoryX[o->oHealth*4];
+    o->oPosY = gMarioState->SnakeHistoryY[o->oHealth*4];
+    o->oPosZ = gMarioState->SnakeHistoryZ[o->oHealth*4];
+
+    //determine if visible and tangible
+    if (o->oHealth > 2) {
+        if (gMarioState->SnakeIndex < o->oHealth) {
+            cur_obj_become_intangible();
+            cur_obj_disable_rendering();
+            }
+            else
+            {
+            cur_obj_become_tangible();
+            cur_obj_enable_rendering();
+            }
+        }
+
+    //i could interpolate these but fuck that
+    o->oInteractType = INTERACT_DAMAGE;
+    if ((gMarioState->SnakeSaftey > 0)||(o->oHealth == 2)) { //mario shouldn't be punished by the 2nd snakeball, it should be punished for being slow
+        o->oInteractType = INTERACT_IGLOO_BARRIER;
+        }
+
+    }
+
+
 void bhv_chain_chomp_chain_part_update(void) {
     struct ChainSegment *segment;
 

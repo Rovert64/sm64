@@ -2074,16 +2074,54 @@ so come back later.\n\
 //--Koopa the Quick"))
 
 DEFINE_DIALOG(DIALOG_167, 1, 4, 30, 200, _("\
-Princess Toadstool's\n\
-castle is just ahead.\n\
+Welcome to Snakio 64\n\
+By: Rovert\n\
 \n\
+Oct 26th 2020\n\
+This game turns SM64\n\
+into a 3D version of the\n\
+classic game Snake.\n\
 \n\
-Press [A] to jump, [Z] to\n\
-crouch, and [B] to punch,\n\
-read a sign, or grab\n\
-something.\n\
-Press [B] again to throw\n\
-something you're holding."))
+There are 3 modes of play:\n\
+1.Super Snakio 64\n\
+2.Classic Snake\n\
+3.Tron Mode\n\
+In Super Snakio 64, you\n\
+play through the game\n\
+normally, but with\n\
+a twist.\n\
+Your snake grows by 5\n\
+for every star you get,\n\
+and 1 for every coin you\n\
+collect.\n\
+All star doors are\n\
+unlocked, so you can\n\
+access every single\n\
+course right away.\n\
+Try to get as many stars\n\
+as you can while you\n\
+grow bigger and bigger!\n\
+\n\
+For Classic Snake, the\n\
+entrance to Secret\n\
+Aquarium has been\n\
+replaced with a new\n\
+minigame room.\n\
+Try get a high score\n\
+while you eat 1ups and\n\
+get longer.\n\
+Finally, TRON MODE.\n\
+If you press L, your\n\
+snake will extend to\n\
+1,000 units long.\n\
+You basically leave\n\
+a trail of line that\n\
+you cannot pass again.\n\
+\n\
+That's all you need\n\
+to know! Turn counter\n\
+factor to 1 to stop\n\
+any lag you see."))
 
 DEFINE_DIALOG(DIALOG_168, 1, 5, 30, 200, _("\
 Hey! Knock it off! That's\n\

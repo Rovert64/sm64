@@ -446,6 +446,8 @@ s32 act_jump(struct MarioState *m) {
     }
 
     if (m->input & INPUT_Z_PRESSED) {
+        //gMarioState->SnakeSaftey = 2;
+        //originally wanted to protect ground pounds but it can be abused to make survival too easy
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -594,6 +596,7 @@ s32 act_side_flip(struct MarioState *m) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
+
     if (m->input & INPUT_Z_PRESSED) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
@@ -609,6 +612,7 @@ s32 act_side_flip(struct MarioState *m) {
     // clang-format off
     if (m->marioObj->header.gfx.unk38.animFrame == 6) play_sound(SOUND_ACTION_SIDE_FLIP_UNK, m->marioObj->header.gfx.cameraToObject);
     // clang-format on
+    //clang ma balls
     return FALSE;
 }
 
@@ -1309,6 +1313,9 @@ s32 act_air_hit_wall(struct MarioState *m) {
         if (m->input & INPUT_A_PRESSED) {
             m->vel[1] = 52.0f;
             m->faceAngle[1] += 0x8000;
+            //gMarioState->SnakeSaftey = 2;
+
+            //audit. made the 2nd snakeball not killing instead of cringe
             return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
         }
     } else if (m->forwardVel >= 38.0f) {

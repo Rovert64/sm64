@@ -19,6 +19,7 @@
 #include "levels/intro/header.h"
 
 const LevelScript level_intro_entry_1[] = {
+    JUMP(script_intro_L1), //skip title n godard
     INIT_LEVEL(),
     FIXED_LOAD(/*loadAddr*/ _goddardSegmentStart, /*romStart*/ _goddardSegmentRomStart, /*romEnd*/ _goddardSegmentRomEnd),
     LOAD_RAW(/*seg*/ 0x13, _behaviorSegmentRomStart, _behaviorSegmentRomEnd),

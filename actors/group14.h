@@ -3,9 +3,6 @@
 
 #include "types.h"
 
-// chain_ball
-extern const GeoLayout metallic_ball_geo[];
-extern const Gfx chain_ball_seg6_dl_060212E8[];
 
 // chain_chomp
 extern const GeoLayout chain_chomp_geo[];

@@ -177,6 +177,11 @@ static unsigned char textMarioB[] = { TEXT_FILE_MARIO_B };
 static unsigned char textMarioC[] = { TEXT_FILE_MARIO_C };
 static unsigned char textMarioD[] = { TEXT_FILE_MARIO_D };
 
+static unsigned char text_info1[] = { TEXT_FILE_INFO_1 };
+static unsigned char text_info2[] = { TEXT_FILE_INFO_2 };
+static unsigned char text_info3[] = { TEXT_FILE_INFO_3 };
+static unsigned char text_info4[] = { TEXT_FILE_INFO_4 };
+
 #ifndef VERSION_EU
 static unsigned char textNew[] = { TEXT_NEW };
 static unsigned char starIcon[] = { GLYPH_STAR, GLYPH_SPACE };
@@ -1770,8 +1775,10 @@ void print_main_menu_strings(void) {
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
 #ifndef VERSION_EU
-    print_hud_lut_string(HUD_LUT_DIFF, SELECT_FILE_X, 35, textSelectFile);
+    //print_hud_lut_string(HUD_LUT_DIFF, SELECT_FILE_X, 35, textSelectFile);
 #endif
+    
+
     // Print file star counts
     print_save_file_star_count(SAVE_FILE_A, SAVEFILE_X1, 78);
     print_save_file_star_count(SAVE_FILE_B, SAVEFILE_X2, 78);
@@ -1785,6 +1792,10 @@ void print_main_menu_strings(void) {
     print_generic_string(SCORE_X, 39, textScore);
     print_generic_string(COPY_X, 39, textCopy);
     print_generic_string(ERASE_X, 39, textErase);
+
+    print_generic_string(90, 196, text_info1);
+    print_generic_string(98, 176, text_info2);
+
 #if !defined(VERSION_JP) && !defined(VERSION_SH)
     sSoundTextX = get_str_x_pos_from_center(254, textSoundModes[sSoundMode], 10.0f);
 #endif

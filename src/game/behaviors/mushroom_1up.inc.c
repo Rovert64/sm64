@@ -175,8 +175,21 @@ void bhv_1up_sliding_loop(void) {
 }
 
 void bhv_1up_loop(void) {
-    bhv_1up_interact();
-    set_object_visibility(o, 3000);
+
+    if (gCurrLevelNum == LEVEL_SA) {
+        if (o->oDistanceToMario < 100.0f) {
+            play_sound(SOUND_GENERAL_COLLECT_1UP, gDefaultSoundArgs);
+            gMarioState->SnakeIndex ++;
+            //go in random place in level
+            o->oPosX = random_u16()/90;
+            o->oPosZ = random_u16()/90;
+            }
+        }
+        else
+        {
+        bhv_1up_interact();
+        set_object_visibility(o, 3000);
+        }
 }
 
 void bhv_1up_jump_on_approach_loop(void) {

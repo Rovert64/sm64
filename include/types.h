@@ -344,6 +344,16 @@ struct MarioState
     /*0xBC*/ f32 peakHeight;
     /*0xC0*/ f32 quicksandDepth;
     /*0xC4*/ f32 unkC4;
+
+    f32 SnakeHistoryX[4100];
+    f32 SnakeHistoryY[4100];
+    f32 SnakeHistoryZ[4100];
+    u16 SnakeIndex;
+    u16 SnakeHighScore;
+    u8 SnakeSaftey;
+    u8 SnakeTimer;
+    u8 SnakeForceMove; // Max is 120. below 40 warns you and eats lives. 
+    u8 SnakeForceMoveLives;
 };
 
 #endif // TYPES_H

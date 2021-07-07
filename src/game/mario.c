@@ -1473,7 +1473,7 @@ void update_mario_health(struct MarioState *m) {
                     // when in snow terrains lose 3 health.
                     // If using the debug level select, do not lose any HP to water.
                     if ((m->pos[1] >= (m->waterLevel - 140)) && !terrainIsSnow) {
-                        m->health += 0x1A;
+                        m->health += 0; //just don't
                     } else if (gDebugLevelSelect == 0) {
                         m->health -= (terrainIsSnow ? 3 : 1);
                     }
@@ -1705,8 +1705,115 @@ void func_sh_8025574C(void) {
 /**
  * Main function for executing Mario's behavior.
  */
+
+//thesse comments an code are awful
+//not a professional programmer just putting that out there if you didn't realize already
+
+u16 whileloop;
+u16 mariosnakedist;
+struct Object *mastersnakeball;
+
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
+    s32 absyvel; //NOOOOOOOOOOOOOOOO
+    s32 absfvel; //NOOOOOOOOOOOOOOOO
+
+    //PRESS L FOR TRON MODE, BUT ONLY OUTSIDE CLASSIC SNAKE
+    //NO SATISFACTION OF SEEING THE LONG SNAKE, YOU HAVE TO EARN IT DUMMY
+    if ((gPlayer1Controller->buttonPressed & L_TRIG) && (gCurrLevelNum != LEVEL_SA)) {
+        gMarioState->SnakeIndex = 1000;
+        play_puzzle_jingle();
+        }
+
+    //TIMER and GENERAL management
+    gMarioState->SnakeTimer ++;
+    if (gMarioState->SnakeTimer > 29) {
+        gMarioState->SnakeTimer = 0;
+        if (gMarioState->SnakeSaftey > 0) {
+            gMarioState->SnakeSaftey --;
+            }
+        if ((gMarioState->SnakeForceMove < 40)&&(gMarioState->SnakeSaftey < 1)) {
+            if (gMarioState->SnakeForceMoveLives > 0) {
+                gMarioState->SnakeForceMoveLives--;
+                }
+                else
+                {
+                gMarioState->hurtCounter += 8;
+                //hp sucks
+                //who programmed hp so cringe
+                }
+            }
+        }
+
+    //PRINT SCORE IF IN SNAKEROOM
+    if (gCurrLevelNum == LEVEL_SA) {
+        print_text_fmt_int(10, 30, "SCORE %d", gMarioState->SnakeIndex);
+        if (gMarioState->SnakeIndex > gMarioState->SnakeHighScore) {
+            gMarioState->SnakeHighScore = gMarioState->SnakeIndex;
+            }
+        }
+
+    //PRINT GAME MESSAGES
+    if (gMarioState->SnakeSaftey > 0) {
+        print_text_fmt_int(10, 10, "SAFETY %d", gMarioState->SnakeSaftey);
+            if (gCurrLevelNum == LEVEL_SA) {
+                print_text_fmt_int(10, 50, "HIGH SCORE %d", gMarioState->SnakeHighScore);
+            }
+        }
+        else
+        {
+        if (gMarioState->SnakeForceMove < 40) {
+            print_text_fmt_int(10, 10, "HURRY UP %d", gMarioState->SnakeForceMoveLives);
+            }
+        }
+
+    //mario have no abs CRINGE GRINGE TGINRENRNIRNJIEWJIEWR
+    absyvel = (gMarioState->vel[1] > 0.0f) ? gMarioState->vel[1] : -gMarioState->vel[1];
+    absfvel = (gMarioState->forwardVel > 0.0f) ? gMarioState->forwardVel : -gMarioState->forwardVel;
+
+
+    //"process" snake force move
+    if ((absfvel > 15)||(absyvel > 15)) { //so dont get mad if jumping or moving
+        if (gMarioState->SnakeForceMove < 120) {
+            gMarioState->SnakeForceMove ++;
+            }
+        }
+        else
+        {
+        if (gMarioState->SnakeForceMove > 0) {
+            gMarioState->SnakeForceMove --;
+            }
+        }
+    
+
+    //WRITE HISTORY
+    //ONLY CHASE MARIO WHEN HE'S FAR
+    mariosnakedist = dist_between_objects(gMarioObject,mastersnakeball);
+    //print_text_fmt_int(100, 88, "DIST %d", mariosnakedist);
+
+
+    //this is my best way to prevent the snake from getting stretched out, by executing this until its near mario
+    //if any smart programmer people find a better way than be my guest
+
+    //post note: i think i made a programmer mistake because objects don't update inside the while loop, and mario's distance
+    //is determined by the closest snake object, but somehow it still works. Maybe if i update this in the future I can properly
+    //rework it to have perfectly smooth motion and interpolation, and maybe even scratch using objects in general. If I scratch
+    //using objects, and just generate display lists instead, I could potentially get a efficient Snake64 that runs on N64 without
+    //exploding the cpu
+    while(mariosnakedist > 60) {
+        whileloop = 4000;
+        while (whileloop > 0) {
+            gMarioState->SnakeHistoryX[whileloop] = gMarioState->SnakeHistoryX[whileloop-1];
+            gMarioState->SnakeHistoryY[whileloop] = gMarioState->SnakeHistoryY[whileloop-1];
+            gMarioState->SnakeHistoryZ[whileloop] = gMarioState->SnakeHistoryZ[whileloop-1];
+            whileloop --;
+            }
+
+        gMarioState->SnakeHistoryX[0] = gMarioState->pos[0];
+        gMarioState->SnakeHistoryY[0] = gMarioState->pos[1];
+        gMarioState->SnakeHistoryZ[0] = gMarioState->pos[2];
+        mariosnakedist -= 60;
+        }
 
     if (gMarioState->action) {
         gMarioState->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
@@ -1797,8 +1904,61 @@ s32 execute_mario_action(UNUSED struct Object *o) {
 void init_mario(void) {
     Vec3s capPos;
     struct Object *capObject;
+    struct Object *snakeball;
+    struct Object *delball;
+    u8 PassTest;
 
     unused80339F10 = 0;
+
+
+    //SNAKE INIT
+    //Don't snake init if you're already balls deep
+    delball = cur_obj_nearest_object_with_behavior(bhvSnakeball);
+
+    if (delball == NULL) {
+        mastersnakeball = spawn_object(gCurrentObject,0x00,bhvMasterSnakeball);
+        mastersnakeball->oHealth = 1;
+
+        whileloop = 1;
+        while(whileloop < 1000) {
+            //BUG: Balls in volcano are invisible. Why? _Who knows._
+            snakeball = spawn_object(gCurrentObject,0xF0,bhvSnakeball);
+            whileloop++;
+            snakeball->oHealth = whileloop;
+            //make the snakeballs instakill in snake mode
+            if (gCurrLevelNum == LEVEL_SA) {
+                snakeball->oDamageOrCoinValue = 100;
+                }
+                else
+                {
+                snakeball->oDamageOrCoinValue = 3;
+                }
+            }
+
+        //clear search history
+            whileloop = 4000;
+            while (whileloop > 0) {
+                gMarioState->SnakeHistoryX[whileloop] = 0;
+                gMarioState->SnakeHistoryY[whileloop] = -4000; //put ob
+                gMarioState->SnakeHistoryZ[whileloop] = 0;
+                whileloop --;
+                }
+
+            gMarioState->SnakeForceMoveLives = 10;
+            //you get 10 seconds not to fuck up
+
+
+        //snake index means how long the snake is
+        gMarioState->SnakeIndex = 5 + (save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1)*5);
+        if (gCurrLevelNum == LEVEL_SA) {
+            gMarioState->SnakeIndex = 5;
+            }
+        //VALVE INDEX XD!!1
+        }
+
+        gMarioState->SnakeSaftey = 8;
+        //he safe whenever he start levil
+        //put this outside init because you always have to stay safe at spawn
 
     gMarioState->actionTimer = 0;
     gMarioState->framesSinceA = 0xFF;
@@ -1901,3 +2061,6 @@ void init_mario_from_save_file(void) {
     gHudDisplay.coins = 0;
     gHudDisplay.wedges = 8;
 }
+
+//were gonna make paper mario origami king in 2018
+//-mario 64 devs マリオ

@@ -3,6 +3,9 @@
 
 #include "types.h"
 
+extern const GeoLayout metallic_ball_geo[];
+extern const Gfx chain_ball_seg6_dl_060212E8[];
+
 // bubble
 extern const GeoLayout bubble_geo[];
 extern const GeoLayout purple_marble_geo[];
@@ -341,5 +344,9 @@ extern const Gfx white_particle_small_dl_begin[];
 extern const Gfx white_particle_small_dl_end[];
 extern const Gfx white_particle_small_dl[];
 extern const Gfx white_particle_small_unused_dl[];
+
+#include "marioball_dl/header.h"
+
+#include "redball/geo_header.h"
 
 #endif

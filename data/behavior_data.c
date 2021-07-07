@@ -4746,7 +4746,7 @@ const BehaviorScript bhv1upSliding[] = {
 
 const BehaviorScript bhv1Up[] = {
     BEGIN(OBJ_LIST_LEVEL),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO),
     BILLBOARD(),
     SET_HITBOX_WITH_OFFSET(/*Radius*/ 30, /*Height*/ 30, /*Downwards offset*/ 0),
     SET_FLOAT(oGraphYOffset, 30),
@@ -5213,6 +5213,33 @@ const BehaviorScript bhvChainChompChainPart[] = {
     SCALE(/*Unused*/ 0, /*Field*/ 200),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_chain_chomp_chain_part_update),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvSnakeball[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BILLBOARD(),
+
+    SET_INTERACT_TYPE(INTERACT_IGLOO_BARRIER),
+    SET_HITBOX(/*Radius*/ 50, /*Height*/ 50),
+    SET_INT(oIntangibleTimer, 0),
+    SET_HOME(),
+
+    BEGIN_LOOP(),
+        SET_INT(oInteractStatus, 0),
+        CALL_NATIVE(bhv_snakeball_loop),
+    END_LOOP(),
+};
+
+const BehaviorScript bhvMasterSnakeball[] = {
+    BEGIN(OBJ_LIST_GENACTOR),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BILLBOARD(),
+    SCALE(/*Unused*/ 0, /*Field*/ 200),
+
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_snakeball_loop),
     END_LOOP(),
 };
 

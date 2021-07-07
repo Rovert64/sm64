@@ -20,7 +20,7 @@ void blue_coin_sliding_away_from_mario(void); /* likely unused */
 void blue_coin_sliding_slow_down(void); /* likely unused */
 void bhv_blue_coin_sliding_loop(void); /* likely unused */
 void bhv_blue_coin_jumping_loop(void); /* likely unused */
-void bhv_seaweed_init(void);
+void bhv_seaweed_init(void); //shit on the floor
 void bhv_seaweed_bundle_init(void);
 void bhv_bobomb_init(void);
 void bobomb_spawn_coin(void);

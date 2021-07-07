@@ -382,6 +382,8 @@ s32 act_reading_npc_dialog(struct MarioState *m) {
     s32 headTurnAmount = 0;
     s16 angleToNPC;
 
+    gMarioState->SnakeSaftey = 5;
+
     if (m->actionArg == 2) {
         headTurnAmount = -1024;
     }
@@ -446,6 +448,8 @@ s32 act_disappeared(struct MarioState *m) {
 s32 act_reading_automatic_dialog(struct MarioState *m) {
     u32 actionArg;
 
+    gMarioState->SnakeSaftey = 5;
+
     m->actionState++;
     if (m->actionState == 2) {
         enable_time_stop();
@@ -500,6 +504,8 @@ s32 act_reading_sign(struct MarioState *m) {
     struct Object *marioObj = m->marioObj;
 
     play_sound_if_no_flag(m, SOUND_ACTION_READ_SIGN, MARIO_ACTION_SOUND_PLAYED);
+
+    gMarioState->SnakeSaftey = 5;
 
     switch (m->actionState) {
         // start dialog
@@ -594,6 +600,9 @@ s32 act_debug_free_move(struct MarioState *m) {
 // star dance handler
 void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     s32 dialogID;
+
+    gMarioState->SnakeSaftey = 5;
+
     if (m->actionState == 0) {
         switch (++m->actionTimer) {
             case 1:

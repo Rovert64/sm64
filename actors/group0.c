@@ -25,3 +25,9 @@
 #include "white_particle_small/model.inc.c"
 
 #include "sparkle_animation/model.inc.c"
+
+#include "chain_ball/model.inc.c"
+
+
+#include "marioball_dl/model.inc.c"
+#include "redball/model.inc.c"
